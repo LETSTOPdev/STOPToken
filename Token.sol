@@ -11,7 +11,7 @@ contract Token is ERC20Capped, Ownable2Step {
     
     uint256 constant _maximalSupply = 10 ** 18 * 1000 * 1000 * 100;
 
-    constructor(address initialOwner) ERC20("lique", "LIQEO") ERC20Capped(_maximalSupply) {
+    constructor(address initialOwner) ERC20("name", "SYMBOL") ERC20Capped(_maximalSupply) {
         _transferOwnership(initialOwner);
     }
 
