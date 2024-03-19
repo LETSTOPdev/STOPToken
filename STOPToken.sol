@@ -7,11 +7,11 @@ pragma solidity ^0.8.0;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.9/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.9/contracts/access/Ownable2Step.sol";
 
-contract Token is ERC20Capped, Ownable2Step {
+contract STOP is ERC20Capped, Ownable2Step {
     
     uint256 constant _maximalSupply = 10 ** 18 * 1000 * 1000 * 100;
 
-    constructor(address initialOwner) ERC20("name", "SYMBOL") ERC20Capped(_maximalSupply) {
+    constructor(address initialOwner) ERC20("STOP", "STOP") ERC20Capped(_maximalSupply) {
         _transferOwnership(initialOwner);
     }
 
