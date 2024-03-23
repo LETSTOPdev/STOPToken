@@ -81,7 +81,6 @@ interface IERC20 {
 
 // File: contracts\token\ERC20\extensions\IERC20Metadata.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (token/ERC20/extensions/IERC20Metadata.sol)
 
 pragma solidity ^0.8.0;
@@ -110,7 +109,6 @@ interface IERC20Metadata is IERC20 {
 
 // File: contracts\utils\Context.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -137,7 +135,6 @@ abstract contract Context {
 
 // File: contracts\token\ERC20\ERC20.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/ERC20.sol)
 
 pragma solidity ^0.8.0;
@@ -503,7 +500,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 
 // File: contracts\token\ERC20\extensions\ERC20Capped.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (token/ERC20/extensions/ERC20Capped.sol)
 
 pragma solidity ^0.8.0;
@@ -541,7 +537,6 @@ abstract contract ERC20Capped is ERC20 {
 
 // File: contracts\access\Ownable.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
@@ -625,7 +620,6 @@ abstract contract Ownable is Context {
 
 // File: contracts\access\Ownable2Step.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (access/Ownable2Step.sol)
 
 pragma solidity ^0.8.0;
@@ -683,26 +677,46 @@ abstract contract Ownable2Step is Ownable {
 
 // File: Token.sol
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/ERC20.sol)
 
 pragma solidity ^0.8.0;
+
+/// @title A capped ERC20 token by LETSTOP
+/// @author Yonadav Vinograd
+/// @dev This contract only extends the inherited open-zeppelin contracts with initialization
+/// and minting functionality
+
 contract STOP is ERC20Capped, Ownable2Step {
     
+    /// @dev sets the maximal possible number of tokens to 100,000,000, with 18 decimals
     uint256 constant _maximalSupply = 10 ** 18 * 1000 * 1000 * 100;
 
+    /// @notice The contract constructor, responsible for setting up the owner, the maximal supply and
+    /// the ERC20 name and symbol
+    /// @param initialOwner The address of the first contract owner, this address can be changed
+    /// later only by the owner
     constructor(address initialOwner) ERC20("STOP", "STOP") ERC20Capped(_maximalSupply) {
         _transferOwnership(initialOwner);
     }
 
-    // any attempt to mint beyond the cap limit will be reverted as a result of the ERC20Capped logic
+    /// @notice Mint a specific number of tokens to a specific address, only the owner can call this function
+    /// @param account The address to mint the tokens into
+    /// @param value The number of tokens to mint
+    /// @dev Any attempt to mint beyond the cap limit will be reverted as a result of the ERC20Capped logic
     function mint(address account, uint256 value) onlyOwner public {
         _mint(account, value);
     }
     
-    // 1 - any attempt to mint beyond the cap limit will be reverted as a result of the ERC20Capped logic
-    // 2 - be careful not to send here zero-values, as it will consume a lot of gas and may revert the execution
-    // 3 - this function is infinite in gas consumption, and can fail if trying to mint into too many accounts
+    /// @notice Perform a series of mints, by receiving a series of account&value pairs, only the owner can call this function
+    /// @param accounts An array of addresses to mint into
+    /// @param values An array of numbers of tokens to mint per address
+    /// @dev Any attempt to mint beyond the cap limit will be reverted as a result of the ERC20Capped logic
+    /// @dev This function will fail if the size of the accounts array and the size of the values array is not the same,
+    /// as they should be identical
+    /// @dev Be careful not to send here zero-values, as it will consume a lot of gas and may revert the execution
+    /// @dev This function can be infinite in gas consumption, and may fall if trying to mint into too many accounts.
+    /// In most of the web3 libraries it is possible to verify if a function execution can be completed, before executing it.
+    /// Consider using this option to save gas and avoid logical issues in external components
     function batchMint(address[] calldata accounts, uint256[] calldata values) onlyOwner public {
         require(accounts.length == values.length, "Inconsistent batch size");
 
