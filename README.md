@@ -46,7 +46,7 @@ LETSTOP will issue tokens to:
     with the vesting token functionality explained in section 2.2 of this document.
 
 # 2.1. Contract Information
-    This section contains detailed information (purpose, assets, functions,
+    This section contains detailed information (purpose, functions,
     and events) about the contract used in the project.
 
 #   2.1.1 STOPToken.sol
@@ -82,6 +82,17 @@ LETSTOP will issue tokens to:
         - allowance(owner, spender) -> returns the allowance the owner provided the spender.
         - pendingOwner() -> returns the pending-owner's address.
         - owner() -> returns the current owner address.
-        
+        - cap() -> returns the maximal possible number of tokens
 
+        2.1.1.1. Events
+          All openzeppelin's ERC20Capped & Ownable2Step events, nothing was added
 
+        2.1.1.2. Modifiers
+          All openzeppelin's ERC20Capped & Ownable2Step modifiers, nothing was added
+
+        2.1.1.3. Functions
+          All openzeppelin's ERC20Capped & Ownable2Step functions, in addition:
+          * constructor: sets the contract owner address, the maximal supply, the token name and the token symbol
+          * mint: mint a specified number of tokens to a given address, using the _mint inherited function
+          * batchMint: verifies that it was given arrays of addresses and values in an identical length,
+            then mint the tokens to the list of addresses according to the given values
