@@ -1,8 +1,11 @@
 
 Project Overview
   1. Functional Requirements
+
     1.1. Roles
+
     1.2. Features
+
     1.3. Use Cases
   2. Technical Requirements
 
