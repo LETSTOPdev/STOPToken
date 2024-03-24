@@ -9,6 +9,16 @@ Project Overview
     1.3. Use Cases
   2. Technical Requirements
 
+    2.1. Contract Information
+
+      2.1.1. STOPToken.sol
+
+        2.1.1.1 Events
+
+        2.1.1.2 Modifiers
+
+        2.1.1.3 Functions
+
 
 # Project Overview
 
