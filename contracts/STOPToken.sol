@@ -679,7 +679,7 @@ abstract contract Ownable2Step is Ownable {
 
 // OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/ERC20.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.24;
 
 /// @title A capped ERC20 token by LETSTOP
 /// @author Yonadav Vinograd
@@ -689,13 +689,14 @@ pragma solidity ^0.8.0;
 contract STOP is ERC20Capped, Ownable2Step {
     
     /// @dev sets the maximal possible number of tokens to 100,000,000, with 18 decimals
-    uint256 constant _maximalSupply = 10 ** 18 * 1000 * 1000 * 100;
+    uint256 constant MAXIMAL_SUPPLY = 100_000_000 * 10 ** 18;
 
     /// @notice The contract constructor, responsible for setting up the owner, the maximal supply and
     /// the ERC20 name and symbol
     /// @param initialOwner The address of the first contract owner, this address can be changed
     /// later only by the owner
-    constructor(address initialOwner) ERC20("STOP", "STOP") ERC20Capped(_maximalSupply) {
+    constructor(address initialOwner) ERC20("STOP", "STOP") ERC20Capped(MAXIMAL_SUPPLY) {
+        require(initialOwner != address(0x0), "Initial owner address cannot be zero address");
         _transferOwnership(initialOwner);
     }
 
@@ -703,7 +704,7 @@ contract STOP is ERC20Capped, Ownable2Step {
     /// @param account The address to mint the tokens into
     /// @param value The number of tokens to mint
     /// @dev Any attempt to mint beyond the cap limit will be reverted as a result of the ERC20Capped logic
-    function mint(address account, uint256 value) onlyOwner public {
+    function mint(address account, uint256 value) onlyOwner external {
         _mint(account, value);
     }
     
@@ -717,7 +718,7 @@ contract STOP is ERC20Capped, Ownable2Step {
     /// @dev This function can be infinite in gas consumption, and may fall if trying to mint into too many accounts.
     /// In most of the web3 libraries it is possible to verify if a function execution can be completed, before executing it.
     /// Consider using this option to save gas and avoid logical issues in external components
-    function batchMint(address[] calldata accounts, uint256[] calldata values) onlyOwner public {
+    function batchMint(address[] calldata accounts, uint256[] calldata values) onlyOwner external {
         require(accounts.length == values.length, "Inconsistent batch size");
 
         for(uint256 i = 0; i < accounts.length; i++) {
