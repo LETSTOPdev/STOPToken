@@ -705,6 +705,7 @@ contract STOP is ERC20Capped, Ownable2Step {
     /// @param value The number of tokens to mint
     /// @dev Any attempt to mint beyond the cap limit will be reverted as a result of the ERC20Capped logic
     function mint(address account, uint256 value) onlyOwner external {
+        require(value != 0, "Cannot mint 0 tokens");
         _mint(account, value);
     }
     
@@ -722,6 +723,7 @@ contract STOP is ERC20Capped, Ownable2Step {
         require(accounts.length == values.length, "Inconsistent batch size");
 
         for(uint256 i = 0; i < accounts.length; i++) {
+            require(values[i] != 0, "Cannot mint 0 tokens");
             _mint(accounts[i], values[i]);
         }
     }
